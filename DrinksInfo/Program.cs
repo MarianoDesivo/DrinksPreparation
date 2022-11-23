@@ -41,7 +41,7 @@ WriteDrinkInfo(drinkInfo);
 static async Task<Categories> GetDrinksCategories(HttpClient client)
 {
     var json = await client.GetAsync("https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list");
-    var jsonString = json.Content.ReadAsStringAsync().Result; 
+    var jsonString = await json.Content.ReadAsStringAsync(); 
     var categories =
         JsonSerializer.Deserialize<Categories>(jsonString);
     return categories;
@@ -52,7 +52,7 @@ static async Task<Drinks> GetDrinks(HttpClient client,string chosenCat)
     try
     {
         var json = await client.GetAsync("https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=" + chosenCat);
-        var jsonString = json.Content.ReadAsStringAsync().Result;
+        var jsonString = await json.Content.ReadAsStringAsync();
         var drinks = JsonSerializer.Deserialize<Drinks>(jsonString);
         return drinks;
     }
@@ -91,7 +91,7 @@ void WriteDrinksMenu(Drinks drinks)
 static async Task<Drink> GetDrinkInfo(HttpClient client, string chosenDrink)
 {
     var json = await client.GetAsync("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + chosenDrink);
-    var jsonString = json.Content.ReadAsStringAsync().Result;
+    var jsonString = await json.Content.ReadAsStringAsync();
     var drinks = JsonSerializer.Deserialize<Drinks>(jsonString);
     var drink = drinks.drinks[0];
     return drink;
